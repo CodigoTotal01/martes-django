@@ -18,6 +18,8 @@ class Product(models.Model):
 	digital = models.BooleanField(default=False,null=True, blank=True)
 	image = models.ImageField(null=True, blank=True)
 	category = models.CharField(max_length=25, default='')
+	brand = models.CharField(max_length=25, default='')
+	charging_time = models.FloatField(blank=True, null=True,default=0)
 
 	def __str__(self):
 		return self.name
