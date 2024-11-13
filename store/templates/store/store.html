@@ -1,32 +1,107 @@
 {% extends 'store/main.html' %}
 {% load static %}
 {% block content %}
-  <div class="d-flex justify-content-center my-4" id="filters">
-    <button class="btn btn-dark mx-1" data-filter="All">All</button>
-    <button class="btn btn-dark mx-1" data-filter="Bicycles">Bicycles</button>
-    <button class="btn btn-dark mx-1" data-filter="Cycleboards">Cycleboards</button>
-    <button class="btn btn-dark mx-1" data-filter="Skateboards">Skateboards</button>
-  </div>
-  <div class="card-columns">
-    {% for product in products %}
-    <div class="card">
-      <img class="thumbnail card-img-top" src="{{product.imageURL}}">
-      <div class="card-body">
-        <h5 class="card-title">{{product.name}}</h5>
-        <div class="d-flex">
-          <p class="card-text flex-fill" data-category="{{product.category}}">{{product.category}}</p>
-          <h6 style="text-align: right;">
-            <strong class="text-muted">${{product.price}}</strong>
-          </h6>
+  <div class="container d-flex">
+    <div class="mt-5">
+      <div class="mt-5 accordion">
+        <h5>Filters</h5>
+        <div class="mt-2 px-2 py-1 mr-3 card">
+          <div class="card-header d-flex justify-content-between">
+            <h6 class="mr-3">Price ($)</h6>
+            <i class="fa-solid fa-chevron-down fa-xs pt-2"></i>
+          </div>
+          <div class="class-body collapse">
+            <ul class="list-group" id="price">
+              <li class="list-group-item">
+                <input type="checkbox" value="0-1000">
+                0 - 1000
+              </li>
+              <li class="list-group-item">
+                <input type="checkbox" value="1000-1500">
+                <span>1000 - 1500</span>
+              </li>
+              <li class="list-group-item">
+                <input type="checkbox" value="1500-2000">
+                <span>1500 - 2000</span>
+              </li>
+              <li class="list-group-item">
+                <input type="checkbox" value="2000-2500">
+                <span>2000 - 2500</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="mt-2 px-2 py-1 mr-3 card">
+          <div class="card-header d-flex justify-content-between">
+            <h6 class="mr-3">Brand <i class="fa-solid fa-tag fa-xs"></i></h6>
+            <i class="fa-solid fa-chevron-down fa-xs pt-2"></i>
+          </div>
+          <div class="class-body collapse">
+            <ul class="list-group" id="brand">
+          </ul>
+          </div>
+        </div>
+        <div class="mt-2 px-2 py-1 mr-3 card">
+          <div class="card-header d-flex justify-content-between">
+            <h6 class="mr-3">Charging Time <i class="fa-solid fa-plug fa-xs"></i></h6>
+            <i class="fa-solid fa-chevron-down fa-xs pt-2"></i>
+          </div>
+          <div class="class-body collapse">
+            <ul class="list-group" id="charging">
+          </ul>
+          </div>
         </div>
       </div>
-      <div class="card-footer bg-white d-flex">
-        <a class="btn px-2 mx-1 flex-fill btn-outline-success" href="#">View</a>
-        <button data-product="{{product.id}}" data-action="add" class="btn px-2 mx-1 flex-fill btn-outline-secondary add-btn update-cart">
-          Add to Cart
-        </button>
+    </div>
+
+    <div>
+      <div class="d-flex justify-content-center my-4" id="filters">
+        <button class="btn btn-dark mx-1" data-filter="All">All</button>
+        <button class="btn btn-dark mx-1" data-filter="Bicycles">Bicycles</button>
+        <button class="btn btn-dark mx-1" data-filter="Cycleboards">Cycleboards</button>
+        <button class="btn btn-dark mx-1" data-filter="Skateboards">Skateboards</button>
+      </div>
+      <div class="cards">
+        {% for product in products %}
+        <div class="card">
+          <img class="thumbnail card-img-top" src="{{product.imageURL}}">
+          <div class="card-body">
+            <h5 class="card-title text-uppercase">{{product.name}}</h5>
+            <div class="d-flex">
+              <h6 style="text-align: right;">
+                <strong class="text-muted" data-price="{{product.price}}">${{product.price}}</strong>
+              </h6>
+            </div>
+            <div class="d-flex justify-content-between text-center">
+              <div>
+                <div> <!-- class="border border-dark rounded px-1"-->
+                  <i class="fa-solid fa-hashtag"></i>
+                  <p class="card-text flex-fill tag" data-tag={{product.category}} data-category="{{product.category}}">{{product.category}}</p>
+                </div>
+              </div>
+              <div>
+                <div> <!-- class="border border-dark rounded px-1  mx-1"-->
+                  <i class="fa-solid fa-tag"></i>
+                  <p class="card-text flex-fill tag" data-tag={{product.brand}} data-brand="{{product.brand}}">{{product.brand}}</p>
+                </div>
+              </div>
+              <div>
+                <div> <!-- class="border border-dark rounded px-1"-->
+                  <i class="fa-solid fa-plug"></i>
+                  <p class="card-text flex-fill tag" data-tag={{product.charging_time}} data-charging="{{product.charging_time}}">{{product.charging_time}}h</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-footer bg-white d-flex">
+            <a class="btn px-2 mx-1 flex-fill btn-outline-success" href="#">View</a>
+            <button data-product="{{product.id}}" data-action="add" class="btn px-2 mx-1 flex-fill btn-outline-secondary add-btn update-cart">
+              Add to Cart
+            </button>
+          </div>
+        </div>
+        {% endfor %}
       </div>
     </div>
-    {% endfor %}
   </div>
 {% endblock content %}
