@@ -4,6 +4,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages  # Importamos el módulo de mensajes
 from store.models import Customer
+import re  # Importado para validación de contraseñas
 
 
 @login_required(login_url='login')
@@ -25,7 +26,19 @@ def SignupPage(request):
         if not uname or not email or not pass1 or not pass2:
             messages.error(request, "Todos los campos son obligatorios.")
             return render(request, 'signup.html')
-
+        
+        if len(pass1) < 8 or not re.search(r"[A-Z]", pass1) or not re.search(r"[a-z]", pass1) or not re.search(r"\d", pass1) or not re.search(r"[@$!%*?&#]", pass1):
+                messages.error(request, "La contraseña debe tener al menos 8 caracteres, incluir una letra mayúscula, una minúscula, un número y un carácter especial.")
+                return render(request, 'signup.html')
+        
+          # Verifica si el nombre de usuario ya existe
+        if User.objects.filter(username=uname).exists():
+            messages.error(request, "El nombre de usuario ya está registrado. Elige otro.")
+            return render(request, 'signup.html')
+        
+        if User.objects.filter(email=email).exists():
+            messages.error(request, "El correo electrónico ya está registrado. Usa otro.")
+            return render(request, 'signup.html')
         # Verifica que las contraseñas coincidan
         if pass1 != pass2:
             messages.error(request, "Las contraseñas no coinciden.")
